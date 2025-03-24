@@ -1,0 +1,1 @@
+# Aqui va como se va a ver, o sea el tamaño de la ventana, los pixeles etc.
