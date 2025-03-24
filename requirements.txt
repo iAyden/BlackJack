@@ -1,0 +1,6 @@
+distlib==0.3.9
+filelock==3.16.1
+git-filter-repo==2.45.0
+platformdirs==4.3.6
+pyodbc==5.2.0
+virtualenv==20.26.6
