@@ -52,6 +52,9 @@ def main():
     player_cards = [7, 10]
     dealer_cards = [5, 8]
 
+    sum_player = sum(player_cards)
+    sum_dealer = sum(dealer_cards)
+
     # Botones
     button_hit = None
     button_stand = None
@@ -66,11 +69,11 @@ def main():
                 running = False
 
         # Dibujar cartas del jugador
-        draw_text("Your game:", 50, 400)
+        draw_text((f"Your game: {sum_player} "), 50, 400)
         draw_cards(player_cards, 50, 450)
 
         # Dibujar cartas del dealer
-        draw_text("Dealer:", 50, 50)
+        draw_text((f"Dealer: {sum_dealer} "), 50, 50)
         draw_cards(dealer_cards, 50, 100, hide_first=not show_dealer_cards)
 
         # Dibujar botones
