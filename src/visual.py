@@ -49,7 +49,7 @@ def main():
     clock = pygame.time.Clock()
 
     # Ejemplo de cartas
-    player_cards = [7, 10]
+    player_cards = [5, 10]
     dealer_cards = [5, 8]
 
     sum_player = sum(player_cards)
@@ -76,6 +76,8 @@ def main():
         draw_text((f"Dealer: {sum_dealer} "), 50, 50)
         draw_cards(dealer_cards, 50, 100, hide_first=not show_dealer_cards)
 
+
+     
         # Dibujar botones
         button_hit = draw_button("Hit", 600, 290, 150, 50, BLUE)
         button_stand = draw_button("Stay", 600, 370, 150, 50, BLUE)
