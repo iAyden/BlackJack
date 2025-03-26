@@ -1,11 +1,13 @@
 import pygame
-from deck import Deck
 from player import Player
-from game import create_cards_for_deck, give_cards_to_player
+
+from game import create_cards_for_deck, give_cards_to_player, give_cards_to_dealer
+
 # Inicializar pygame
 pygame.init()
+
 create_cards_for_deck()
-give_cards_to_player()
+
 # Configuración de pantalla
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -19,7 +21,7 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
 # Fuentes
-font = pygame.font.Font(None, 36)
+font = pygame.font.Font(None, 36) #
 
 # Dimensiones de las cartas
 CARD_WIDTH, CARD_HEIGHT = 80, 120
@@ -33,7 +35,7 @@ def draw_text(text, x, y, color=WHITE):
 
 # Función para dibujar cartas
 def draw_cards(cards, x, y, hide_first=False):
-    for i, card in enumerate(cards):
+    for i, card in enumerate(cards): #enumerate
         if i == 0 and hide_first:  # Ocultar la primera carta
             screen.blit(card_back, (x + i * (CARD_WIDTH + 10), y))
         else:
@@ -50,15 +52,16 @@ def draw_button(text, x, y, width, height, color, text_color=WHITE):
 def main():
     running = True
     clock = pygame.time.Clock()
-    p1 = Player(1) 
+   
     # Ejemplo de cartas
 
-    player_cards = p1.get_hand()
-    print(player_cards)
-    
+    player_hand = give_cards_to_player()
+    player_cards = [c.value for c in player_hand]
+    dealer_hand = give_cards_to_dealer()
+    dealer_cards = [d.value for d in dealer_hand]
 
-    dealer_cards = [5, 8]
-
+    sum_player = sum(player_cards)
+    sum_dealer = sum(dealer_cards)
     # Botones
     button_hit = None
     button_stand = None
@@ -71,13 +74,16 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+         #   if event.type == pygame.MOUSEBUTTONDOWN:
+                #if button_hit.is_clicked(event.pos):
+        #        print("hola")
 
         # Dibujar cartas del jugador
-        draw_text("Your game:", 50, 400)
+        draw_text(f"Your game: {sum_player}", 50, 400)
         draw_cards(player_cards, 50, 450)
 
         # Dibujar cartas del dealer
-        draw_text("Dealer:", 50, 50)
+        draw_text(f"Dealer: {sum_dealer}", 50, 50)
         draw_cards(dealer_cards, 50, 100, hide_first=not show_dealer_cards)
 
 

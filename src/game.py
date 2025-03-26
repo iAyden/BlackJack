@@ -26,9 +26,18 @@ def create_cards_for_deck():
 def give_cards_to_player():
     first_card = d.get_random_card()
     second_card = d.get_random_card()
-    player.insert_card(1,first_card)
-    player.insert_card(1,second_card)
-    player.print_hand(1)
+    player.insert_card(first_card)
+    player.insert_card(second_card)
+    player.print_hand()
+    return player.get_hand()
+
+def give_cards_to_dealer():
+    first_card = d.get_random_card()
+    second_card = d.get_random_card()
+    dealer.insert_card(first_card)
+    dealer.insert_card(second_card)
+    dealer.print_hand()
+    return dealer.get_hand()
     
 
 
