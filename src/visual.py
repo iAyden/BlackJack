@@ -1,8 +1,11 @@
 import pygame
-
+from deck import Deck
+from player import Player
+from game import create_cards_for_deck, give_cards_to_player
 # Inicializar pygame
 pygame.init()
-
+create_cards_for_deck()
+give_cards_to_player()
 # Configuración de pantalla
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -47,9 +50,13 @@ def draw_button(text, x, y, width, height, color, text_color=WHITE):
 def main():
     running = True
     clock = pygame.time.Clock()
-
+    p1 = Player(1) 
     # Ejemplo de cartas
-    player_cards = [5, 10]
+
+    player_cards = p1.get_hand()
+    print(player_cards)
+    
+
     dealer_cards = [5, 8]
 
     sum_player = sum(player_cards)
