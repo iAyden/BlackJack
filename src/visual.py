@@ -9,7 +9,7 @@ pygame.init()
 create_cards_for_deck()
 
 # Configuración de pantalla
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1000, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Blackjack")
 
@@ -20,11 +20,19 @@ GREEN = (0, 128, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
+# Diccionario para mapear palos a símbolos
+suits_symbols = {
+    "heart": "♥",
+    "diamond": "♦",
+    "spade": "♠",
+    "club": "♣"
+}
+
 # Fuentes
-font = pygame.font.Font(None, 36) #
+font = pygame.font.SysFont("segoeuiemoji", 54)  # O prueba con Arial si no funciona
 
 # Dimensiones de las cartas
-CARD_WIDTH, CARD_HEIGHT = 80, 120
+CARD_WIDTH, CARD_HEIGHT = 120, 180
 card_back = pygame.Surface((CARD_WIDTH, CARD_HEIGHT))
 card_back.fill(RED)
 
@@ -35,12 +43,21 @@ def draw_text(text, x, y, color=WHITE):
 
 # Función para dibujar cartas
 def draw_cards(cards, x, y, hide_first=False):
-    for i, card in enumerate(cards): #enumerate
-        if i == 0 and hide_first:  # Ocultar la primera carta
+    for i, card in enumerate(cards):
+        if i == 0 and hide_first:  # Hide first card
             screen.blit(card_back, (x + i * (CARD_WIDTH + 10), y))
         else:
             pygame.draw.rect(screen, WHITE, (x + i * (CARD_WIDTH + 10), y, CARD_WIDTH, CARD_HEIGHT))
-            draw_text(str(card), x + i * (CARD_WIDTH + 10) + 30, y + 30, BLACK)
+            if isinstance(card, tuple):  # Check if it's a tuple (value, color, suit)
+                value, color, suit = card
+                # Display value and suit
+                draw_text(str(value), x + i * (CARD_WIDTH + 15) + 25, y + 30, 
+                         RED if color == "red" else BLACK)
+                # Display suit symbol
+                draw_text(suits_symbols[suit], x + i * (CARD_WIDTH + 20) + 10, y + 90,
+                         RED if color == "red" else BLACK)
+            else:  # Fallback for non-tuple cards
+                draw_text(str(card), x + i * (CARD_WIDTH + 10) + 30, y + 30, BLACK)
 
 # Función para dibujar botones
 def draw_button(text, x, y, width, height, color, text_color=WHITE):
@@ -56,13 +73,13 @@ def main():
     # Ejemplo de cartas
 
     player_hand = give_cards_to_player()
-    player_cards = [c.value for c in player_hand]
+    player_cards = [(c.value, c.color, c.suits) for c in player_hand]
     dealer_hand = give_cards_to_dealer()
-    dealer_cards = [d.value for d in dealer_hand]
+    dealer_cards = [(d.value, d.color, d.suits) for d in dealer_hand]
 
-    sum_player = sum(player_cards)
-    sum_dealer = sum(dealer_cards)
-
+    sum_player = sum([c[0] for c in player_cards])
+    sum_dealer = sum([c[0] for c in dealer_cards])
+    
     # Botones
     button_hit = None
     button_stand = None
@@ -81,21 +98,21 @@ def main():
 
         # Dibujar cartas del jugador
 
-        draw_text(f"Your game: {sum_player}", 50, 400)
-        draw_cards(player_cards, 50, 450)
+        draw_text(f"Your game: {sum_player}", 50, 315)
+        draw_cards(player_cards, 50, 375)
 
         # Dibujar cartas del dealer
-        draw_text(f"Dealer: {sum_dealer}", 50, 50)
+        draw_text(f"Dealer: ", 50, 20)
 
-        draw_cards(dealer_cards, 50, 100, hide_first=not show_dealer_cards)
+        draw_cards(dealer_cards, 50, 75, hide_first=not show_dealer_cards)
 
 
      
         # Dibujar botones
-        button_hit = draw_button("Hit", 600, 290, 150, 50, BLUE)
-        button_stand = draw_button("Stay", 600, 370, 150, 50, BLUE)
-        button_double = draw_button("Double", 600, 450, 150, 50, BLUE)
-        button_split = draw_button("Split", 600, 520, 150, 50, BLUE)
+        button_hit = draw_button("Hit", 800, 310, 187, 65, BLUE)
+        button_stand = draw_button("Stay", 800, 380, 187, 65, BLUE)
+        button_double = draw_button("Double", 800, 450, 187, 65, BLUE)
+        button_split = draw_button("Split", 800, 520, 187, 65, BLUE)
 
         pygame.display.flip()
         clock.tick(30)

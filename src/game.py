@@ -9,29 +9,27 @@ def create_cards_for_deck():
     Color = ["red","black"]
     Suit = ["heart", "diamond", "club", "spade"]
     print(Suit[:2])
-    x = 0
     y = 1
     i = 1
-    j = 0
     
     for y in Suit[:2]:
-        for i in range(1,10): #
+        for i in range(1,10):
             c = Card(i,Color[0],y)
             d.add_card(c)
         
-            for i in range(4):
-                c = Card(10,Color[0],y)
-                d.add_card(c)
-            c = Card(11,Color[0],y)
+        for i in range(4):
+            c = Card(10,Color[0],y)
             d.add_card(c)
+        c = Card(11,Color[0],y)
+        d.add_card(c)
 
     for y in Suit[2:]:
-            for i in range(1,10): #
-                c = Card(i,Color[1],y)
-                d.add_card(c)
-            for i in range(4):
-                c = Card(10,Color[1],y)
-                d.add_card(c)
+        for i in range(1,10):
+            c = Card(i,Color[1],y)
+            d.add_card(c)
+        for i in range(4):
+            c = Card(10,Color[1],y)
+            d.add_card(c)
             c = Card(11,Color[1],y)
             d.add_card(c)
     d.print_deck()
