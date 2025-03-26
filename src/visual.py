@@ -51,7 +51,7 @@ def draw_button(text, x, y, width, height, color, text_color=WHITE):
 # Juego principal (solo visual)
 def main():
     running = True
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock() 
    
     # Ejemplo de cartas
 
@@ -98,8 +98,9 @@ def main():
         button_split = draw_button("Split", 600, 520, 150, 50, BLUE)
 
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(30) #Telling pygame the loop is not going to be more faster than 30
 
     pygame.quit()
 
 main()
+ 
