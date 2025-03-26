@@ -17,7 +17,7 @@ class Card:
             return None
 
     def __str__(self):
-        return f"{self.value } with color {self.color} and suit {self.suits}  "
+        return f"{self.value },{self.color},{self.suits}"
 
 
 
