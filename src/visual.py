@@ -65,6 +65,8 @@ def draw_button(text, x, y, width, height, color, text_color=WHITE):
     draw_text(text, x + 10, y + 10, text_color)
     return pygame.Rect(x, y, width, height)
 
+#def new_game():
+    
 # Juego principal (solo visual)
 def main():
     running = True
@@ -95,22 +97,34 @@ def main():
         mouse = pygame.mouse.get_pos()
         if check_if_bust_twentyone(sum_player) == False:
             bust = True
+        if bust == True or playerwinner == True or dealerwinner == True or draw == True:
+        
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:    
                     if event.button == 1:
-                            if 800 <= mouse[0] <= 800 + 187 and 310 <= mouse[1] <= 310 + 65:
-                                print("hola")                        
-                                
-                                # hit_dealer = hit_card_dealer()
-                                # dealer_cards = [(d.value, d.color, d.suits) for d in dealer_hand]
-                                # sum_dealer = sum([c[0] for c in dealer_cards])
-                                # draw_text(f"Dealer: {sum_dealer}", 50, 20)
-                                # draw_cards(dealer_cards, 50, 75, False)
+                            draw_button("New Game", 650, 310, 285, 65, BLUE)
+                            if 650 <= mouse[0] <= 650 + 285 and 310 <= mouse[1] <= 310 + 65:
+                                    button_hit = None
+                                    button_stand = None
+                                    show_dealer_cards = False
+                                    bust = False
+                                    draw = False
+                                    playerwinner = False
+                                    dealerwinner = False       
+                                    reset_deck()
+                                    player_hand = give_cards_to_player()
+                                    player_cards = [(c.value, c.color, c.suits) for c in player_hand]
+                                    dealer_hand = give_cards_to_dealer()
+                                    dealer_cards = [(d.value, d.color, d.suits) for d in dealer_hand]
+
+                                    sum_player = sum([c[0] for c in player_cards])
+                                    sum_dealer = sum([c[0] for c in dealer_cards])
+                                    check_if_bust_twentyone(sum_player)
+
         else:
-            button_hit = draw_button("Hit", 800, 310, 187, 65, BLUE)
-            button_stand = draw_button("Stand", 800, 380, 187, 65, BLUE)
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -127,7 +141,7 @@ def main():
 
                                     draw = True
                             else:
-                                while 17>sum_dealer<18: 
+                                while 18>sum_dealer: 
                                         
                                         
                                         hit_card_dealer()
@@ -136,11 +150,16 @@ def main():
                                             
                                         sum_dealer = sum([c[0] for c in dealer_cards])
                                             
-                                        winner = check_winner(sum_dealer,sum_player)
-                                        if winner == True:
-                                            playerwinner = True
-                                        else:
-                                            dealerwinner = True
+                                winner = check_winner(sum_dealer,sum_player)
+                                print(f"Winner boolean {winner}")
+                                if sum_dealer == sum_player:
+
+                                    draw = True
+                                else:
+                                    if winner == True:
+                                        playerwinner = True
+                                    else:
+                                        dealerwinner = True
                                     
          #   if event.type == pygame.MOUSEBUTTONDOWN:
                 #if button_hit.is_clicked(event.pos):
@@ -157,31 +176,35 @@ def main():
         draw_text(f"Dealer: ", 50, 20)
 
         draw_cards(dealer_cards, 50, 75, True)
-        if sum_player == 21:
-            playerwinner = True
-        if sum_dealer == 21:
-            dealerwinner = True
+        if draw == False:
+            if sum_player == 21:
+                playerwinner = True
+            if sum_dealer == 21:
+                dealerwinner = True
         if bust == True:
-            draw_button("New Game", 800, 310, 187, 65, BLUE)
+            draw_button("New Game", 650, 310, 285, 65, BLUE)
             draw_text(f"BUST", 500, 250)
             draw_cards(dealer_cards, 50, 75, False)
             draw_text(f"Dealer: {sum_dealer}", 50, 20)
         if draw == True:
-            draw_button("New Game", 800, 310, 187, 65, BLUE)
+            draw_button("New Game", 650, 310, 285, 65, BLUE)
             draw_cards(dealer_cards, 50, 75, False)
             draw_text(f"Dealer: {sum_dealer}", 50, 20)
             draw_text("Draw", 500, 250)
         if playerwinner == True:
-            draw_button("New Game", 800, 310, 187, 65, BLUE)
+            draw_button("New Game", 650, 310, 285, 65, BLUE)
             draw_text(f"Player Wins", 500, 250)
             draw_cards(dealer_cards, 50, 75, False)
             draw_text(f"Dealer: {sum_dealer}", 50, 20)
         if dealerwinner == True:
-            ("New Game", 800, 310, 187, 65, BLUE)
+            draw_button("New Game", 650, 310, 285, 65, BLUE)
             draw_text(f"Dealer Wins", 500, 250)
             draw_cards(dealer_cards, 50, 75, False)
             draw_text(f"Dealer: {sum_dealer}", 50, 20)
         
+        if playerwinner == False and dealerwinner == False and draw == False and bust == False:
+            draw_button("Hit", 800, 310, 187, 65, BLUE)
+            draw_button("Stand", 800, 380, 187, 65, BLUE) 
         #button_double = draw_button("Double", 800, 450, 187, 65, BLUE)
         #button_split = draw_button("Split", 800, 520, 187, 65, BLUE)
 

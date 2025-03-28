@@ -33,6 +33,9 @@ class Deck:
             raise Exception("Deck is empty")
         else:
             self.cards.remove(card) 
+    def clear_deck(self):
+        if len(self.cards) != 0:
+            self.cards.clear()
 
     def __str__(self):
         return f"Carta añadida: {self.cards}"

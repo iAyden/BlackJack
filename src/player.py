@@ -34,3 +34,7 @@ class Player:
 
     def get_hand(self):
         return self.hand
+    
+    def clear_hand(self):
+        if len(self.hand) != 0:    
+            self.hand.clear()

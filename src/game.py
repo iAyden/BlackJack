@@ -69,19 +69,22 @@ def check_if_bust_twentyone(total):
     else:
         True
 def check_winner(dealer_total,player_total):
-    if dealer_total<player_total and 22>player_total<=21:  
+    if dealer_total<player_total:  
         if player_total>21:
             return False
         else:
             return True
-    elif player_total<dealer_total and 22>dealer_total<=21:
+    elif player_total<dealer_total:
         if dealer_total>21:
-            return False
-        else:
             return True
+        else:
+            return False
     
-        
-
+def reset_deck():
+    d.clear_deck()
+    create_cards_for_deck()
+    player.clear_hand()
+    dealer.clear_hand()
 #d.print_deck()
 
 
