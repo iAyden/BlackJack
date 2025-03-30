@@ -52,10 +52,16 @@ def draw_cards(cards, x, y, hide_first):
             pygame.draw.rect(screen, WHITE, (x + i * (CARD_WIDTH + 10), y, CARD_WIDTH, CARD_HEIGHT))
             if isinstance(card, tuple):  
                 value, color, suit = card
-                draw_text(str(value), x + i * (CARD_WIDTH + 15) + 25, y + 30, 
+                if value == 11:
+                    draw_text(str("A"), x + i * (CARD_WIDTH + 15) + 25, y + 30, 
                           RED if color == "red" else BLACK)
-                draw_text(suits_symbols[suit], x + i * (CARD_WIDTH + 20) + 10, y + 90,
-                          RED if color == "red" else BLACK)
+                    draw_text(suits_symbols[suit], x + i * (CARD_WIDTH + 20) + 10, y + 90,
+                          RED if color == "red" else BLACK)    
+                else:
+                    draw_text(str(value), x + i * (CARD_WIDTH + 15) + 25, y + 30, 
+                            RED if color == "red" else BLACK)
+                    draw_text(suits_symbols[suit], x + i * (CARD_WIDTH + 20) + 10, y + 90,
+                            RED if color == "red" else BLACK)
             else:
                 draw_text(str(card), x + i * (CARD_WIDTH + 10) + 30, y + 30, BLACK)
 
@@ -67,6 +73,16 @@ def draw_button(text, x, y, width, height, color, text_color=WHITE):
 
 #def new_game():
     
+def calculate_hand_value(cards):
+    total = sum(c[0] for c in cards)
+    num_aces = sum(1 for c in cards if c[0] == 11)  
+
+    while total > 21 and num_aces > 0:
+        total -= 10
+        num_aces -= 1
+    
+    return total
+
 # Juego principal (solo visual)
 def main():
     running = True
@@ -79,9 +95,10 @@ def main():
     dealer_hand = give_cards_to_dealer()
     dealer_cards = [(d.value, d.color, d.suits) for d in dealer_hand]
 
-    sum_player = sum([c[0] for c in player_cards])
-    sum_dealer = sum([c[0] for c in dealer_cards])
+    sum_player = calculate_hand_value(player_cards)
+    sum_dealer = calculate_hand_value(dealer_cards)
     
+    print(f"suit como en la serie{player_hand[0].suits}")
     # Botones
     button_hit = None
     button_stand = None
@@ -91,6 +108,7 @@ def main():
     playerwinner = False
     dealerwinner = False
     #click = pygame.mouse.get_pressed()
+
     while running:
         screen.fill(GREEN)
         
@@ -119,8 +137,8 @@ def main():
                                     dealer_hand = give_cards_to_dealer()
                                     dealer_cards = [(d.value, d.color, d.suits) for d in dealer_hand]
 
-                                    sum_player = sum([c[0] for c in player_cards])
-                                    sum_dealer = sum([c[0] for c in dealer_cards])
+                                    sum_player = calculate_hand_value(player_cards)
+                                    sum_dealer = calculate_hand_value(dealer_cards)
                                     check_if_bust_twentyone(sum_player)
 
         else:
@@ -133,11 +151,13 @@ def main():
                         if 800 <= mouse[0] <= 800 + 187 and 310 <= mouse[1] <= 310 + 65:
                             hit_card_player()
                             player_cards = [(c.value, c.color, c.suits) for c in player_hand]
-                            sum_player = sum([c[0] for c in player_cards])
-                        #card_tuple = [{card.value, card.color, card.suits}]
+                            sum_player = calculate_hand_value(player_cards)
                             draw_cards(player_cards, 50, 375, False)
+                           
+                        #card_tuple = [{card.value, card.color, card.suits}]
+                            
                         elif 800 <= mouse[0] <= 800 + 187 and 380 <= mouse[1] <= 380 + 65:
-                            if sum_dealer == sum_player:
+                            if sum_dealer == sum_player and sum_dealer>17:
 
                                     draw = True
                             else:
@@ -148,7 +168,7 @@ def main():
                                         dealer_cards = [(c.value, c.color, c.suits) for c in dealer_hand]
                                             
                                             
-                                        sum_dealer = sum([c[0] for c in dealer_cards])
+                                        sum_dealer = calculate_hand_value(dealer_cards)
                                             
                                 winner = check_winner(sum_dealer,sum_player)
                                 print(f"Winner boolean {winner}")
@@ -177,9 +197,9 @@ def main():
 
         draw_cards(dealer_cards, 50, 75, True)
         if draw == False:
-            if sum_player == 21:
+            if sum_player == 21 and sum_dealer>17:
                 playerwinner = True
-            if sum_dealer == 21:
+            if sum_dealer == 21 and sum_dealer>17:
                 dealerwinner = True
         if bust == True:
             draw_button("New Game", 650, 310, 285, 65, BLUE)
